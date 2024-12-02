@@ -3,7 +3,7 @@ require_once("../school_api/path.php");
 require_once(APP_PATH_CONNECTION . "/connection.php");
 require_once(APP_PATH_SERVICE . "/service.php");
 
-class teacher {
+class time {
     private $db, $service, $last_id;
     function __construct()
     {
@@ -12,39 +12,30 @@ class teacher {
     }
 
     function getList() {
-       $res = $this->service->getData("tbl_teacher", "id");
+       $res = $this->service->getData("tbl_time", "id");
        $this->db->success($res);
     }
 
-    function save($teacher) {
+    function save($time) {
         // convert data to array object by decode params
-        $jsonString = json_encode($teacher);
-        $teachers = json_decode($jsonString);
+        $jsonString = json_encode($time);
+        $times = json_decode($jsonString);
 
-        $data = array (
-            "teacher_id" => $teachers->teacher_id,
-            "khmer_name" => $teachers->khmer_name,
-            "english_name" => $teachers->english_name,
-            "gender" => $teachers->gender,
-            "dob" => $teachers->dob, // Set to null if dob is empty
-            "nationality" => $teachers->nationality,
-            "pob" => $teachers->pob,
-            "address" => $teachers->address,
-            "phone_number1" => $teachers->phone_number1,
-            "phone_number2" => $teachers->phone_number2,
-            "is_deleted" => 0
+        $data = array(
+            "time_label" => isset($times->time_label) ? $times->time_label : '',
+            "description" => isset($times->description) ? $times->description : '', // Corrected typo
+            "is_deleted" => isset($times->is_delete) ? (int)$times->is_delete : 0  // Ensure it's an integer
         );
-
-        if (isset($teachers->id) == 0) {
-            $res = $this->service->save("tbl_teacher", $data);
-            $teachers->id = $this->db->last_id;
+        if (isset($times->id) == 0) {
+            $res = $this->service->save("tbl_time", $data);
+            $times->id = $this->db->last_id;
         } else {
-            $res = $this->service->update("tbl_teacher", $data, "WHERE id = $teachers->id ");
+            $res = $this->service->update("tbl_time", $data, "WHERE id = $times->id ");
         }
         return $res;
     } 
     function load($id) {
-        $res = $this->service->getDataById("tbl_teacher", "id", $id);
+        $res = $this->service->getDataById("tbl_time", "id", $id);
         $this->db->success($res);
     }
 
@@ -69,15 +60,15 @@ class teacher {
 
     function deleteById($id) {
         // Call the delete function from service.php
-        $result = $this->service->delete("tbl_teacher", "id", $id); // Assuming 'id' is the column name in the 'tbl_room' table
+        $result = $this->service->delete("tbl_time", "id", $id); // Assuming 'id' is the column name in the 'tbl_room' table
     
         // Check if the delete operation was successful
         if ($result) {
             // If successful, send a success message with the response
-            $this->db->success(["message" => "Room deleted successfully", "roomId" => $id]);
+            $this->db->success(["message" => "time deleted successfully", "TimeId" => $id]);
         } else {
             // If deletion failed, send an error message
-            $this->db->error(["message" => "Failed to delete room", "roomId" => $id]);
+            $this->db->error(["message" => "Failed to delete Time", "TimeIds" => $id]);
         }
     }    
     
