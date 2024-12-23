@@ -39,25 +39,6 @@ class time {
         $this->db->success($res);
     }
 
-    // //Delete
-    // function deleteList() {
-    //     // Get the ID from the query parameter
-    //     if (isset($_GET['id']) && $_GET['id'] > 0) {
-    //         $id = intval($_GET['id']); // Make sure to sanitize the input
-            
-    //         // Call the delete method
-    //         $res = $this->service->delete("tbl_room", "id", $id);
-            
-    //         if ($res) {
-    //             return 'Delete successful';
-    //         } else {
-    //             return 'Delete not successful';
-    //         }
-    //     } else {
-    //         return 'Room ID is required';
-    //     }
-    // }
-
     function deleteById($id) {
         // Call the delete function from service.php
         $result = $this->service->delete("tbl_time", "id", $id); // Assuming 'id' is the column name in the 'tbl_room' table
@@ -65,12 +46,12 @@ class time {
         // Check if the delete operation was successful
         if ($result) {
             // If successful, send a success message with the response
-            $this->db->success(["message" => "time deleted successfully", "TimeId" => $id]);
+            $this->db->success(["message" => "Time deleted successfully", "timeId" => $id]);
         } else {
             // If deletion failed, send an error message
-            $this->db->error(["message" => "Failed to delete Time", "TimeIds" => $id]);
+            $this->db->error(["message" => "Failed to delete Time", "timeId" => $id]);
         }
-    }    
+    }       
     
 }
 ?>
