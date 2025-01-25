@@ -155,6 +155,17 @@ class service {
             return false;
         }
     }
+    function protectRecord($par_table, $par_fieldname, $par_fieldvalue)
+    {
+        $this->pro_conn = new connection();
+        // create sql statement
+        $this->pro_sql = "SELECT * FROM $par_table WHERE $par_fieldname='$par_fieldvalue'";
+        // send sql statement to database server
+        $this->pro_cmd = mysqli_query($this->pro_conn->get_connection(), $this->pro_sql);
+        // count the result
+        $this->pro_count = mysqli_num_rows($this->pro_cmd);
+        // return true if no record found, false if duplicate found
+        return $this->pro_count == 0 ? true : false;
+    }
 
 }
-?>
